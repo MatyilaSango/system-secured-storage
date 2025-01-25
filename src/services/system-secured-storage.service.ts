@@ -60,7 +60,7 @@ export class SystemSecuredStorage {
    */
   retrieveAllAsync = async <T = { [key: string]: any }>(callback: (error: any | null, data: T | undefined) => void) => {
     return await retrieveDataLocallyAsync(this.fileDirectory, (error, data) => {
-      if (error) callback(error, undefined);
+      if (error || !data) callback(error, undefined);
       else callback(null, this.encryptionService.decrypt<T>(data));
     });
   };
@@ -134,5 +134,55 @@ export class SystemSecuredStorage {
       if (err || !storedData) callback(err, undefined);
       else callback(null, storedData[key] as T);
     });
+  }
+
+  /**
+   * Delete stored data.
+   *
+   * @param {string} key - The key the data stored in.
+   * @returns
+   */
+  deleteData(key: string): void {
+    const storedData = this.retrieveAll();
+
+    if (!storedData) return undefined;
+
+    delete storedData[key];
+
+    const encryptedData = this.encryptionService.encrypt(storedData);
+
+    saveDataLocallySync(this.fileDirectory, encryptedData);
+  }
+
+  /**
+   * Asynchronously delete stored data.
+   *
+   * @param {string} key - The key the data stored in.
+   * @returns
+   */
+  async deleteDataAsync(key: string): Promise<void> {
+    await this.retrieveAllAsync(async (err, storedData) => {
+      if (err || !storedData) return;
+
+      delete storedData[key];
+
+      const encryptedData = this.encryptionService.encrypt(storedData);
+
+      await saveDataLocallyAsync(this.fileDirectory, encryptedData);
+    });
+  }
+
+  /**
+   * Reset storage.
+   */
+  reset(): void {
+    saveDataLocallySync(this.fileDirectory, '');
+  }
+
+  /**
+   * Asynchronously reset storage.
+   */
+  async resetAsync(): Promise<void> {
+    await saveDataLocallyAsync(this.fileDirectory, '');
   }
 }
