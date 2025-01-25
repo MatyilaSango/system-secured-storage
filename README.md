@@ -54,7 +54,6 @@ Create an instance of the system-secure-storage with your desired `options`.
 import SystemSecuredStorage from 'system-secured-storage';
 
 const storage = new SystemSecuredStorage(options)
-
 ```
 
 #### Storing Data
