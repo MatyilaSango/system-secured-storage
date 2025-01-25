@@ -18,8 +18,8 @@ export class EncryptionService {
    * @param {string} iv - The iv key.
    */
   constructor(key: string, iv: string) {
-    this.key = Buffer.from(key);
-    this.iv = Buffer.from(iv);
+    this.key = Buffer.from(key, 'hex');
+    this.iv = Buffer.from(iv, 'hex');
   }
 
   /**

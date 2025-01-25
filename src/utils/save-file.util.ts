@@ -35,13 +35,14 @@ export const saveDataLocallySync = (directory: string, data: string) => {
  * @param {void} callback - Callback fucntion
  * @returns
  */
-export const retrieveDataLocallyAsync = async (
-  directory: string,
-  callback: (error: any | null, data: string) => void
-) => {
-  const path = directory.concat('/', fileName);
+export const retrieveDataLocallyAsync = async (directory: string, callback: (error: any | null, data: any) => void) => {
+  try {
+    const path = directory.concat('/', fileName);
 
-  return readFile(path, { encoding: 'utf-8' }, callback);
+    return readFile(path, { encoding: 'utf-8' }, (err, data) => callback(err, JSON.parse(data)));
+  } catch (error) {
+    return undefined;
+  }
 };
 
 /**
@@ -51,7 +52,11 @@ export const retrieveDataLocallyAsync = async (
  * @returns
  */
 export const retrieveDataLocallySync = (directory: string) => {
-  const path = directory.concat('/', fileName);
+  try {
+    const path = directory.concat('/', fileName);
 
-  return readFileSync(path, { encoding: 'utf-8' });
+    return JSON.parse(readFileSync(path, { encoding: 'utf-8' }));
+  } catch (error) {
+    return undefined;
+  }
 };
