@@ -45,7 +45,7 @@ export class SystemSecuredStorage {
    *
    * @returns
    */
-  retrieveStoredData = <T = { [key: string]: any }>() => {
+  retrieveAll = <T = { [key: string]: any }>() => {
     const encryptedData = retrieveDataLocallySync(this.fileDirectory);
 
     if (!encryptedData) return undefined;
@@ -58,9 +58,7 @@ export class SystemSecuredStorage {
    *
    * @returns
    */
-  retrieveStoredDataAsync = async <T = { [key: string]: any }>(
-    callback: (error: any | null, data: T | undefined) => void
-  ) => {
+  retrieveAllAsync = async <T = { [key: string]: any }>(callback: (error: any | null, data: T | undefined) => void) => {
     return await retrieveDataLocallyAsync(this.fileDirectory, (error, data) => {
       if (error) callback(error, undefined);
       else callback(null, this.encryptionService.decrypt<T>(data));
@@ -76,7 +74,7 @@ export class SystemSecuredStorage {
    * @returns
    */
   private encryptData = (storedData: { [key: string]: any } | undefined, key: string, data: any) => {
-    const _storedData = storedData ? (storedData[key] = data) : { key, data };
+    const _storedData = storedData ? { ...storedData, [key]: data } : { [key]: data };
 
     return this.encryptionService.encrypt(_storedData);
   };
@@ -88,7 +86,7 @@ export class SystemSecuredStorage {
    * @param {string} data - The data.
    */
   storeData(key: string, data: any) {
-    const storedData = this.retrieveStoredData();
+    const storedData = this.retrieveAll();
 
     const encryptedData = this.encryptData(storedData, key, data);
 
@@ -102,8 +100,8 @@ export class SystemSecuredStorage {
    * @param {string} data - The data.
    */
   async storeDataAsync(key: string, data: any) {
-    await this.retrieveStoredDataAsync(async (err, storedData) => {
-      if (!err) return;
+    await this.retrieveAllAsync(async (err, storedData) => {
+      if (err) return;
 
       const encryptedData = this.encryptData(storedData, key, data);
 
@@ -118,7 +116,7 @@ export class SystemSecuredStorage {
    * @returns {T} The data stored.
    */
   retrieveData<T>(key: string): T | undefined {
-    const storedData = this.retrieveStoredData();
+    const storedData = this.retrieveAll();
 
     if (!storedData) return undefined;
 
@@ -131,10 +129,10 @@ export class SystemSecuredStorage {
    * @param {string} key - The key the data stored in.
    * @returns {T} The data stored.
    */
-  async retriveDataAsync<T>(key: string, callback: (data: T | undefined) => void): Promise<void> {
-    await this.retrieveStoredDataAsync((err, storedData) => {
-      if (!err || !storedData) callback(undefined);
-      else callback(storedData[key] as T);
+  async retriveDataAsync<T>(key: string, callback: (error: any | null, data: T | undefined) => void): Promise<void> {
+    await this.retrieveAllAsync((err, storedData) => {
+      if (err || !storedData) callback(err, undefined);
+      else callback(null, storedData[key] as T);
     });
   }
 }
