@@ -37,11 +37,11 @@ They can be generated using cli.
 // Using node
 > node
 
-// Genarate random string for the `encryption` key - 64 Characters
-> require('crypto').randomBytes(64).toString('hex')
-
-// Genarate random string for the `iv` key - 32 Characters
+// Genarate random string for the `encryption` key - 16 Characters
 > require('crypto').randomBytes(32).toString('hex')
+
+// Genarate random string for the `iv` key - 16 Characters
+> require('crypto').randomBytes(16).toString('hex')
 ```
 
 Make sure to store your keys somewhere safely.
@@ -72,5 +72,35 @@ To retrieve the decrypted data:
 ```
 // Retrieve and decrypt the data using the key
 const decryptedData = storage.retrieveData('myKey');
+
+```
+
+#### Retrieving all data
+
+To retrieve all the decrypted data:
+
+```
+// Retrieve and decrypt the data using the key
+const decryptedData = storage.retrieveAll();
+
+```
+
+#### Delete data
+
+To delete data:
+
+```
+// Delete date by key
+const decryptedData = storage.deleteData('mykey');
+
+```
+
+#### Reset storage
+
+To reset storage meaning deleting all data:
+
+```
+// Delete date by key
+const decryptedData = storage.reset();
 
 ```
