@@ -1,0 +1,34 @@
+{
+  "name": "system-secured-storage",
+  "version": "1.0.0",
+  "description": "A Node.js project that allows users to store encrypted key-value data locally on their system. This project serves as an alternate storage solution to SQLite but with enhanced security features, leveraging AES encryption to ensure the confidentiality and integrity of the stored data.",
+  "main": "./dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "start-ts": "ts-node index.ts",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatyilaSango/system-secured-storage.git"
+  },
+  "keywords": [
+    "encrypted storage",
+    "safeStorage",
+    "encryptStorage",
+    "security",
+    "local storage",
+    "encrypted data"
+  ],
+  "author": "MatyilaSango",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatyilaSango/system-secured-storage/issues"
+  },
+  "homepage": "https://github.com/MatyilaSango/system-secured-storage#readme",
+  "devDependencies": {
+    "@types/typescript": "^2.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.3"
+  }
+}
