@@ -7,12 +7,13 @@ const fileName = 'data.encrypted';
  *
  * @param {string} directory - The directory to save the file.
  * @param {string} data - The data to be saved.
+ * @param {void} callback - The callback function
  * @returns
  */
-export const saveDataLocallyAsync = async (directory: string, data: string) => {
+export const saveDataLocallyAsync = (directory: string, data: string, callback: (error: any) => void) => {
   const path = directory.concat('/', fileName);
 
-  return writeFile(path, JSON.stringify(data), () => {});
+  return writeFile(path, JSON.stringify(data), callback);
 };
 
 /**
@@ -32,16 +33,19 @@ export const saveDataLocallySync = (directory: string, data: string) => {
  * Retrieve data locally asynchronously.
  *
  * @param {string} directory - The directory the data saved in.
- * @param {void} callback - Callback fucntion
+ * @param {void} callback - Callback function.
  * @returns
  */
-export const retrieveDataLocallyAsync = async (directory: string, callback: (error: any | null, data: any) => void) => {
+export const retrieveDataLocallyAsync = (directory: string, callback: (error: any | null, data: any) => void) => {
   try {
     const path = directory.concat('/', fileName);
 
-    return readFile(path, { encoding: 'utf-8' }, (err, data) => callback(err, JSON.parse(data)));
+    return readFile(path, { encoding: 'utf-8' }, (error, data) => {
+      if (error || !data) callback(error, undefined);
+      else callback(error, JSON.parse(data));
+    });
   } catch (error) {
-    return undefined;
+    callback(error, undefined);
   }
 };
 
