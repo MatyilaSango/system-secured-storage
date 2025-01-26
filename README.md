@@ -90,17 +90,17 @@ const decryptedData = storage.retrieveAll();
 To delete data:
 
 ```
-// Delete date by key
+// Delete data by key
 const decryptedData = storage.deleteData('mykey');
 
 ```
 
 #### Reset storage
 
-To reset storage meaning deleting all data:
+To reset storage meaning deleting all the data:
 
 ```
-// Delete date by key
-const decryptedData = storage.reset();
+// Reset storage
+storage.reset();
 
 ```
