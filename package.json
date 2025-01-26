@@ -4,6 +4,9 @@
   "description": "A Node.js project that allows users to store encrypted key-value data locally on their system. This project serves as an alternate storage solution to SQLite but with enhanced security features, leveraging AES encryption to ensure the confidentiality and integrity of the stored data.",
   "main": "./dist/index.js",
   "types": "./dist/index.d.js",
+  "files": [
+    "/dist"
+  ],
   "scripts": {
     "start": "node dist/index.js",
     "start-ts": "ts-node index.ts",
@@ -28,7 +31,10 @@
   },
   "homepage": "https://github.com/MatyilaSango/system-secured-storage#readme",
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "@types/typescript": "^2.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
   }
